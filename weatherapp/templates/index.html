@@ -6,12 +6,25 @@
   </head>
   <body>
     <h1>Weather forecast for London</h1>
-      {% for day in forecast_list %}
-        {% if day[3] == "moderate rain" %}
-          <p style="color:green;">{{day[0]}} &ndash; {{day[1]}} &ndash; {{day[2]}} &ndash; {{day[3]}}</p>
-        {% else %}
-          <p>{{day[0]}} &ndash; {{day[1]}} &ndash; {{day[2]}} &ndash; {{day[3]}}</p>
-        {% endif %}
-      {% endfor %}
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Min</th>
+          <th>Max</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for day in forecast_list %}
+          <tr>
+            <td>{{ day[0] }}</td>
+            <td>{{ day[1] }}</td>
+            <td>{{ day[2] }}</td>
+            <td>{{ day[3] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </body>
 </html>
