@@ -11,18 +11,14 @@ def get_weather():
 @app.route('/')
 def index():
     data = json.loads(get_weather())
-    page = "<html><head><title>My Weather</title></head><body>"
-    page += "<h1>Weather for {}, {}</h1>".format(data.get('city').get('name'), data.get('city').get('country'))
-
-    for day in data.get("list"):
-        page += "<b>date:</b> {} <b>min:</b> {} <b>max:</b> {} <b>Description:</b> {} <br/>".format(
-            time.strftime('%d %B', time.localtime(day.get('dt'))),
-            (day.get("temp").get("min")),
-            day.get("temp").get("max"),
-            day.get("weather")[0].get("desctiption")
-        )
-        page += "</body></html>"
-        return page
+    forecast_list = []
+    for days in data.get("list"):
+        day = time.strftime("%d %B", time.localtime(days.get('dt')))
+        mini = days.get("temp").get("min")
+        maxi = days.get("temp").get("max")
+        description = days.get("weather")[0].get("description")
+        forecast_list.append((day, mini, maxi, description))
+    return render_template("index.html", forecast_list=forecast_list)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 3000))
