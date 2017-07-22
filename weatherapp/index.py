@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import os, json, time, urllib.request, urllib.error, urllib.parse
 
 app = Flask(__name__)
@@ -9,11 +9,18 @@ def get_weather(city):
     return response
 
 @app.route('/')
-@app.route("/<searchcity>")
-def index(searchcity = "London"):
+def index():
+    searchcity = request.args.get("searchcity")
+    if not searchcity:
+        searchcity = "London"
+
     data = json.loads(get_weather(searchcity))
 
-    city = data['city']['name']
+    try:
+        city = data['city']['name']
+    except KeyError:
+        return render_template('invalid_city.html', user_input=searchcity)
+
     country = data['city']['country']
 
     forecast_list = []
